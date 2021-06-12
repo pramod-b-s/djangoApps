@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Vote{% endblock %}
+
+{% block main %}
+<div class="row">
+    <div class="col-lg-8 col-lg-offset-2">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Cast Your Vote</h3>
+            </div>
+
+            <ul class="list-group">
+                {% for poll in polls %}
+                <li class="list-group-item">
+                    <strong>{{ poll.question }}</strong>
+                    <span class="pull-right">
+                        <a href="{% url 'vote' poll.id %}" class="btn btn-info btn-xs">Vote</a> &nbsp;
+                        <a href="{% url 'results' poll.id %}" class="btn btn-default btn-xs">View Results</a> &nbsp;
+                    </span>
+                </li>
+                {% endfor %}
+            </ul>
+
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2>{{question.question_text}}</h2>
+                    </div>
+                </div>
+                 
+                <div class="row">
+                    <div class="col-lg-12">
+                        <hr />
+
+                        <form method="POST">
+                        {% csrf_token %}
+                            <div class="form-group">
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="poll" value="option1" required>
+                                        {{question.choice_one}}
+                                    </label> &nbsp;
+                                    <label>
+                                        <input type="radio" name="poll" value="option2">
+                                        {{question.choice_two}}
+                                    </label> &nbsp;
+                                    <label>
+                                        <input type="radio" name="poll" value="option3">
+                                        {{question.choice_three}}
+                                    </label> &nbsp;
+                                </div>
+                            </div>
+
+                            <hr />
+
+                            <button type="submit" class="btn btn-info">
+                                Submit
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
