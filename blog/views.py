@@ -1,30 +1,45 @@
 from django.shortcuts import render
 from django.views import generic
+from django.utils import timezone
+from django.urls import reverse
+from django.http import HttpResponseRedirect, HttpResponse
 
-from .models import Post
+from .models import Post, CreatePollForm
 
 class PostsIndexView(generic.ListView):
-    template_name = 'blog/index.html'
+    template_name = 'blog/userposts.html'
 
     def get_queryset(self):
         return Post.objects.order_by('-date')[:5]
+
+
+class AllPostsIndexView(generic.ListView):
+    template_name = 'blog/allposts.html'
+
+    def get_queryset(self):
+        return Post.objects.order_by('-date')[:5]
+
 
 class PostDetail(generic.DetailView):
     model = Post
     template_name = 'blog/post_detail.html'
 
-def writepost(request, post_id):
-    post = get_object_or_404(Post, pk=post_id)
-    
-    try:
-        selected_choice = post.choice_set.get(pk=request.POST['title'])
-    except (KeyError, Choice.DoesNotExist):
-        return render(request, 'blog/detail.html', {
-            'post': post,
-            'error_message': "You didn't select a choice."
-        })
+def post_create(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            form = CreatePollForm(request.POST)
+
+            if form.is_valid():    
+                form.instance.date = timezone.now()        
+                form.instance.author = request.user
+                form.save()
+                post_list = Post.objects.all()
+                pcontext = { 'post_list' : post_list }
+                return HttpResponseRedirect(reverse('blog:all_posts'))
+        else:
+            form = CreatePollForm()
+
+        context = {'form' : form}
+        return render(request, 'blog/create.html', context)
     else:
-        selected_choice.votes += 1
-        selected_choice.save()
-        Vote.objects.create(user=request.user, question=question)
-        return HttpResponseRedirect(reverse('blog:posts', args=(question.id,)))
+        HttpResponseRedirect(reverse('main:login'))

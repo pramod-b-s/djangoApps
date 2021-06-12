@@ -17,7 +17,7 @@ class Question(models.Model):
     votes_one = models.IntegerField(default=0)
     votes_two = models.IntegerField(default=0)
     votes_three = models.IntegerField(default=0)
-    pollcreator = models.CharField(max_length=50, default="NoCreator")
+    pollcreator = models.ForeignKey(User, on_delete=models.CASCADE)
     
     def __str__(self):
         return self.question_text

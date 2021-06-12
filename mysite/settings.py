@@ -82,7 +82,7 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'mydjangodatabase',
+        'NAME': 'mysitedatabase',
         'USER': 'pramodbs',
         'PASSWORD': 'dbpassword',
         'HOST': '127.0.0.1',

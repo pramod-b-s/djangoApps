@@ -17,7 +17,7 @@ def homepage(request):
 
 def login_request(request):
     if request.user.is_authenticated:
-        return render(request, 'main/homepage.html')
+        return HttpResponseRedirect(reverse("main:home"))
     if request.method == 'POST':
         form = AuthenticationForm(request=request, data=request.POST)
         if form.is_valid():
@@ -34,6 +34,7 @@ def login_request(request):
             messages.error(request, "Invalid username or password.")
     form = AuthenticationForm()
     return render(request = request, template_name = "main/login.html", context={"form":form})
+
 
 @login_required
 def logout_request(request):

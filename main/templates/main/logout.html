@@ -1,3 +1,7 @@
-<h1> You are now logged out {{prev_user_name}} </h1>
+{% extends "base.html" %}
 
-<button href="signup"> Go to Homepage</button>
+{% block title %}LogIn{% endblock %}
+
+{% block main %}
+<h1> You are now logged out {{prev_user_name}} </h1>
+{% endblock %}

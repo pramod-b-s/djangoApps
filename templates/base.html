@@ -31,8 +31,12 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="{% url 'blog:home' %}">Write a BlogPost</a></li>
-                        <li><a href="{% url 'polls:home' %}">Create a Poll</a></li>
+                        {% if user.is_authenticated %}
+                        <li><a href="{% url 'blog:create' %}">Write a BlogPost</a></li>
+                        <li><a href="{% url 'blog:all_posts' %}">Show BlogPosts</a></li>
+                        <li><a href="{% url 'polls:create' %}">Create a Poll</a></li>                        
+                        <li><a href="{% url 'polls:home' %}">Show Polls</a></li>
+                        {% endif %}
                         <li><a href="{% url 'main:logout' %}">Logout</a></li>
                     </ul>
                 </div><!-- /.navbar-collapse -->

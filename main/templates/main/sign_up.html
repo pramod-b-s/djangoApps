@@ -1,3 +1,8 @@
+{% extends "base.html" %}
+
+{% block title %}LogIn{% endblock %}
+
+{% block main %}
 <form method="post">
     {% csrf_token %}
     {{form.as_p}}
@@ -5,3 +10,4 @@
 </form>
 
 <a href="{% url 'main:login' %}" target="blank"><strong>Have an account? Login</strong></a>
+{% endblock %}
